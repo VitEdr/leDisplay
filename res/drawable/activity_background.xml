@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android" >
+    <item 
+        android:drawable="@drawable/back_fon"
+        />
+    <item
+        android:drawable="@drawable/butl"
+        android:top="100dp"
+        android:right="0dp"
+        android:bottom="50dp"
+        android:left="50dp"/>
+
+</layer-list>

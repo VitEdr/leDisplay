@@ -1,0 +1,15 @@
+<resources>
+
+    <string name="app_name">leDisplay</string>
+    
+    <string-array name="effectslist">
+	    <item>Налево</item>
+	    <item>Направо</item>
+	    <item>Вверх</item>
+	    <item>Вниз</item>
+	    <item>Без эффекта</item>
+	    <item>Снег</item>
+	    <item>Занавес</item>
+	</string-array>
+
+</resources>

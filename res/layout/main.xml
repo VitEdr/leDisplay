@@ -42,7 +42,7 @@
             android:layout_weight="1"
             android:adjustViewBounds="true"
             android:scaleType="fitXY"
-            android:src="@drawable/t1" />
+            android:src="@drawable/t_buttonstate" />
 
         <EditText
             android:id="@+id/editText1"
@@ -72,7 +72,7 @@
             android:weightSum="4" >
 
             <ImageView
-                android:id="@+id/imageView5"
+                android:id="@+id/imageView3"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
@@ -87,16 +87,16 @@
                 android:layout_weight="1"
                 android:adjustViewBounds="true"
                 android:scaleType="fitXY"
-                android:src="@drawable/s1" />
-
+                android:src="@drawable/e_buttonstate" />
+            
             <ImageView
-                android:id="@+id/imageView3"
+                android:id="@+id/imageView5"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:adjustViewBounds="true"
                 android:scaleType="fitXY"
-                android:src="@drawable/e1" />
+                android:src="@drawable/s_buttonstate" />
 
             <ImageView
                 android:id="@+id/imageView6"
@@ -105,7 +105,7 @@
                 android:layout_weight="1"
                 android:adjustViewBounds="true"
                 android:scaleType="fitXY"
-                android:src="@drawable/p1" />
+                android:src="@drawable/p_buttonstate" />
 
         </LinearLayout>
 

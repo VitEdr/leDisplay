@@ -10,6 +10,7 @@ package vit.argon.ledisplay;
 public final class R {
     public static final class array {
         public static final int effectslist=0x7f060000;
+        public static final int fontslist=0x7f060001;
     }
     public static final class attr {
     }
@@ -26,49 +27,55 @@ public final class R {
         public static final int butl=0x7f020006;
         public static final int e1=0x7f020007;
         public static final int e2=0x7f020008;
-        public static final int fon=0x7f020009;
-        public static final int ic_launcher=0x7f02000a;
-        public static final int log=0x7f02000b;
-        public static final int o1=0x7f02000c;
-        public static final int o2=0x7f02000d;
-        public static final int p1=0x7f02000e;
-        public static final int p2=0x7f02000f;
-        public static final int s1=0x7f020010;
-        public static final int s2=0x7f020011;
-        public static final int t1=0x7f020012;
-        public static final int t2=0x7f020013;
+        public static final int e_buttonstate=0x7f020009;
+        public static final int fon=0x7f02000a;
+        public static final int ic_launcher=0x7f02000b;
+        public static final int log=0x7f02000c;
+        public static final int o1=0x7f02000d;
+        public static final int o2=0x7f02000e;
+        public static final int p1=0x7f02000f;
+        public static final int p2=0x7f020010;
+        public static final int p_buttonstate=0x7f020011;
+        public static final int s1=0x7f020012;
+        public static final int s2=0x7f020013;
+        public static final int s_buttonstate=0x7f020014;
+        public static final int t1=0x7f020015;
+        public static final int t2=0x7f020016;
+        public static final int t_buttonstate=0x7f020017;
     }
     public static final class id {
-        public static final int Button01=0x7f080014;
-        public static final int Button02=0x7f080012;
-        public static final int Button11=0x7f08001b;
-        public static final int Button12=0x7f08001d;
-        public static final int Button13=0x7f080018;
-        public static final int Button14=0x7f08001a;
-        public static final int Button15=0x7f080015;
-        public static final int Button16=0x7f080017;
-        public static final int EditText01=0x7f080013;
-        public static final int EditText06=0x7f08001c;
-        public static final int EditText07=0x7f080019;
-        public static final int EditText08=0x7f080016;
-        public static final int editText1=0x7f08000a;
-        public static final int fragment=0x7f080007;
-        public static final int framelayout1=0x7f08000f;
-        public static final int imageView1=0x7f080008;
-        public static final int imageView2=0x7f080009;
+        public static final int Button01=0x7f080016;
+        public static final int Button02=0x7f080014;
+        public static final int Button11=0x7f08001d;
+        public static final int Button12=0x7f08001f;
+        public static final int Button13=0x7f08001a;
+        public static final int Button14=0x7f08001c;
+        public static final int Button15=0x7f080017;
+        public static final int Button16=0x7f080019;
+        public static final int EditText01=0x7f080015;
+        public static final int EditText06=0x7f08001e;
+        public static final int EditText07=0x7f08001b;
+        public static final int EditText08=0x7f080018;
+        public static final int editText1=0x7f08000c;
+        public static final int fragment=0x7f080009;
+        public static final int framelayout1=0x7f080011;
+        public static final int imageView1=0x7f08000a;
+        public static final int imageView2=0x7f08000b;
         public static final int imageView3=0x7f08000d;
-        public static final int imageView4=0x7f08000c;
-        public static final int imageView5=0x7f08000b;
-        public static final int imageView6=0x7f08000e;
-        public static final int imageView7=0x7f080010;
-        public static final int imageView8=0x7f080011;
+        public static final int imageView4=0x7f08000e;
+        public static final int imageView5=0x7f08000f;
+        public static final int imageView6=0x7f080010;
+        public static final int imageView7=0x7f080012;
+        public static final int imageView8=0x7f080013;
         public static final int numberPicker1=0x7f080001;
         public static final int numberPicker2=0x7f080006;
+        public static final int numberPicker3=0x7f080008;
         public static final int spinner1=0x7f080000;
+        public static final int spinner2=0x7f080004;
         public static final int textView1=0x7f080002;
         public static final int textView2=0x7f080003;
-        public static final int textView7=0x7f080004;
-        public static final int textView8=0x7f080005;
+        public static final int textView7=0x7f080005;
+        public static final int textView8=0x7f080007;
     }
     public static final class layout {
         public static final int attribute_menu=0x7f030000;
@@ -78,6 +85,10 @@ public final class R {
         public static final int template_menu=0x7f030004;
     }
     public static final class string {
+        public static final int Bold=0x7f050001;
+        public static final int Bright=0x7f050003;
+        public static final int Italic=0x7f050002;
+        public static final int Speed=0x7f050004;
         public static final int app_name=0x7f050000;
     }
     public static final class style {

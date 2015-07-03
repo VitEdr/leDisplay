@@ -4,6 +4,7 @@
     android:layout_height="match_parent"
     android:layout_gravity="center"
     android:orientation="horizontal"
+    android:background="@color/frag_background"
     android:weightSum="9" >
 
     <LinearLayout
@@ -14,7 +15,7 @@
         android:weightSum="4" >
 
         <Spinner
-            android:id="@+id/spinner1"
+            android:id="@+id/spinner2"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:entries="@array/effectslist" />
@@ -31,10 +32,10 @@
             android:id="@+id/textView7"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="TextView" />
+            android:text="@string/Bright" />
 
         <NumberPicker
-            android:id="@+id/numberPicker1"
+            android:id="@+id/numberPicker2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
 
@@ -50,10 +51,10 @@
             android:id="@+id/textView8"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="TextView" />
+            android:text="@string/Speed" />
 
         <NumberPicker
-            android:id="@+id/numberPicker2"
+            android:id="@+id/numberPicker3"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
 

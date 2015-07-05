@@ -51,6 +51,7 @@
             android:layout_weight="9"
             android:editable="true"
             android:ems="10"
+            android:hint="Введите сообщение"
             android:gravity="bottom"
             android:singleLine="true"
             android:visibility="invisible" />

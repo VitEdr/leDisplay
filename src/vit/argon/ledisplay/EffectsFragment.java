@@ -1,7 +1,5 @@
 package vit.argon.ledisplay;
 
-import android.app.Dialog;
-import android.app.DialogFragment;
 import android.app.Fragment;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -44,8 +42,10 @@ public class EffectsFragment extends Fragment{
 		spPicker = (NumberPicker) getActivity().findViewById(R.id.numberPicker3);
 		brPicker.setMaxValue(5);
 		brPicker.setMinValue(1);
-		spPicker.setMaxValue(8);
+		setBright(1);
+		spPicker.setMaxValue(7);
 		spPicker.setMinValue(1);
+		setSpeed(1);
 		
 		effects.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
 			public void onItemSelected(AdapterView<?> parent, View view, 

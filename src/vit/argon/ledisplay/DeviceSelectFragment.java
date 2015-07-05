@@ -24,7 +24,7 @@ public class DeviceSelectFragment extends DialogFragment {
 		AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
 		builder.setTitle("Choose device").setItems(devicesArray, new DialogInterface.OnClickListener(){
 			public void onClick(DialogInterface dialog, int which){
-				InputConvertActivity.connectDevice(devicesArray[which]);
+				InputConvertActivity.connectDevice(devicesArray[which].substring(devicesArray[which].length() - 17));
 			}
 		});
 		return builder.create();

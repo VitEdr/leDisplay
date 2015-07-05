@@ -3,6 +3,7 @@ package vit.argon.ledisplay;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.UUID;
@@ -31,6 +32,7 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 import android.support.v4.app.FragmentActivity;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -38,6 +40,7 @@ import android.view.View.OnTouchListener;
 import android.view.MotionEvent;
 import android.view.View.OnKeyListener;
 import android.view.KeyEvent;
+import android.view.inputmethod.InputMethodManager;
 
 public class InputConvertActivity extends FragmentActivity{
 	//Fragment objects
@@ -72,8 +75,9 @@ public class InputConvertActivity extends FragmentActivity{
 	private static BluetoothAdapter LEDisplay = null;
 	private static BluetoothSocket btSocket = null;
 	private static OutputStream outStream = null;
+	private BroadcastReceiver mReceiver;
 	private static final UUID MY_UUID = UUID.fromString("00001101-0000-1000-8000-00805F9B34FB");
-	public static List<String> visibleDevices = new ArrayList<String>();
+	public static Set<String> visibleDevices = new HashSet<String>();
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState){
@@ -171,6 +175,10 @@ public class InputConvertActivity extends FragmentActivity{
 					if(keyCode == KeyEvent.KEYCODE_ENTER){
 						PreviewDrawer(editText.getText().toString());
 						
+						InputMethodManager imm = (InputMethodManager)getSystemService(
+							      Context.INPUT_METHOD_SERVICE);
+							imm.hideSoftInputFromWindow(editText.getWindowToken(), 0);
+						
 						Intent startParseIntent = new Intent (InputConvertActivity.this, ParseInputActivity.class);
 						startActivityForResult(startParseIntent, MESSAGE_PARSED);
 						}
@@ -189,12 +197,12 @@ public class InputConvertActivity extends FragmentActivity{
         Set<BluetoothDevice> pairedDevices = LEDisplay.getBondedDevices();
                 
         for(BluetoothDevice bt:pairedDevices)
-        	visibleDevices.add(bt.getAddress());
+        	visibleDevices.add(bt.getName() + "\n" + bt.getAddress());
         
         final DeviceSelectFragment myDialogFragment = new DeviceSelectFragment();
         
         // Create a BroadcastReceiver for ACTION_FOUND
-        final BroadcastReceiver mReceiver = new BroadcastReceiver() {
+        mReceiver = new BroadcastReceiver() {
             public void onReceive(Context context, Intent intent) {
                 String action = intent.getAction();
                 // When discovery finds a device
@@ -202,7 +210,7 @@ public class InputConvertActivity extends FragmentActivity{
                     // Get the BluetoothDevice object from the Intent
                     BluetoothDevice device = intent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE);
                     // Add the name and address to an array adapter to show in a ListView
-                    visibleDevices.add(device.getAddress());
+                    visibleDevices.add(device.getName() + "\n" + device.getAddress());
                     
                    myDialogFragment.dismiss();
                    myDialogFragment.show(getSupportFragmentManager(), "dialog");
@@ -220,23 +228,31 @@ public class InputConvertActivity extends FragmentActivity{
 			public void onClick(View v) {
 				// Maintain a count of user presses
 				// Display count as text on the Button
-				DataConstructor();
-				head = mData.getHead();
-				body = mData.getBody();
-				tail = mData.getTail();
-				
-				String msg = "", msg_a = "", msg_b = "";
-				for(int bt = 0; bt < tail[0].length; bt++)
-	    			msg += tail[0][bt] + " ";
-	    		for(int bt = 0; bt < tail[1].length; bt++)
-	    			msg_a += tail[1][bt] + " ";
-	    		for(int bt = 0; bt < tail[2].length; bt++)
-	    			msg_b += tail[2][bt] + " ";
-	    		check.setText("tail0 " + msg + "\n" + "tail1 " + msg_a + "\n" + "tail2 " + msg_b);
-				
-				LEDisplay.startDiscovery();
-												
-            	myDialogFragment.show(getSupportFragmentManager(), "dialog");
+				if(editText.getText().length() == 0){
+					Toast toast = Toast.makeText(getApplicationContext(), 
+							"¬ведите сообщение!", Toast.LENGTH_SHORT); 
+					toast.show(); 	
+				}
+				else{
+
+					DataConstructor();
+					head = mData.getHead();
+					body = mData.getBody();
+					tail = mData.getTail();
+
+					String msg = "", msg_a = "", msg_b = "";
+					for(int bt = 0; bt < tail[0].length; bt++)
+						msg += tail[0][bt] + " ";
+					for(int bt = 0; bt < tail[1].length; bt++)
+						msg_a += tail[1][bt] + " ";
+					for(int bt = 0; bt < tail[2].length; bt++)
+						msg_b += tail[2][bt] + " ";
+					check.setText("tail0 " + msg + "\n" + "tail1 " + msg_a + "\n" + "tail2 " + msg_b);
+
+					LEDisplay.startDiscovery();
+
+					myDialogFragment.show(getSupportFragmentManager(), "dialog");
+				}
 								
 			}
 		});
@@ -248,7 +264,7 @@ public class InputConvertActivity extends FragmentActivity{
     	super.onActivityResult(requestCode, resultCode, data);
     	
     	if(requestCode == MESSAGE_PARSED && resultCode == RESULT_OK){
-    		BODY_LENGTH = editText.length()*12 + 4*ParseInputActivity.N_LINES;
+    		BODY_LENGTH = editText.getText().length()*12 + 4*ParseInputActivity.N_LINES;
     		parsed_msg = new byte[36*ParseInputActivity.N_LINES];
     		parsed_msg = data.getByteArrayExtra(ParseInputActivity.PARSED);
     		mData.setBody(parsed_msg, BODY_LENGTH);
@@ -261,10 +277,18 @@ public class InputConvertActivity extends FragmentActivity{
     	}
     }
 	
+	@Override
+	public void onDestroy(){
+		super.onDestroy();
+		unregisterReceiver(mReceiver);
+	}
+	
 	public void DataConstructor(){
-		mData.setEffect(pos, mEffectsFragment.getEffect());
-		mData.setBrightness(mEffectsFragment.getBright());
-		mData.setSpeed(pos, mEffectsFragment.getSpeed());
+		if(mEffectsFragment != null){
+			mData.setEffect(pos, mEffectsFragment.getEffect());
+			mData.setBrightness(mEffectsFragment.getBright());
+			mData.setSpeed(pos, mEffectsFragment.getSpeed());
+		}
 		mData.setLength(pos, editText.length());
 		//mData.setFontSize(mAttributeFragment.getTextSize());
 		//mData.setBody(parsed_msg, BODY_LENGTH);
@@ -416,7 +440,7 @@ public class InputConvertActivity extends FragmentActivity{
           sendData(tail);
 
           try {
-        	  Thread.sleep(1000);
+        	  Thread.sleep(500);
           } catch (InterruptedException e) {
         	  e.printStackTrace();
           }

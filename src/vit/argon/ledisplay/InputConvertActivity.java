@@ -10,6 +10,7 @@ import java.util.UUID;
 
 import vit.argon.ledisplay.R;
 import android.app.Activity;
+import android.app.DialogFragment;
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
@@ -42,7 +43,7 @@ import android.view.View.OnKeyListener;
 import android.view.KeyEvent;
 import android.view.inputmethod.InputMethodManager;
 
-public class InputConvertActivity extends FragmentActivity{
+public class InputConvertActivity extends Activity{
 	//Fragment objects
 	private EffectsFragment mEffectsFragment;
 	private AttributeFragment mAttributeFragment;
@@ -75,7 +76,7 @@ public class InputConvertActivity extends FragmentActivity{
 	private static BluetoothAdapter LEDisplay = null;
 	private static BluetoothSocket btSocket = null;
 	private static OutputStream outStream = null;
-	private BroadcastReceiver mReceiver;
+	//private BroadcastReceiver mReceiver;
 	private static final UUID MY_UUID = UUID.fromString("00001101-0000-1000-8000-00805F9B34FB");
 	public static Set<String> visibleDevices = new HashSet<String>();
 	
@@ -114,10 +115,11 @@ public class InputConvertActivity extends FragmentActivity{
 			}
 		});
 		//"Aa" button onClickListener
-		/*attributes.setOnClickListener(new OnClickListener(){
+		attributes.setOnClickListener(new OnClickListener(){
 			 
 			@Override
 			public void onClick(View v){
+				
 				mAttributeFragment = new AttributeFragment();
 				
 				//font = mAttributeFragment.getFont();
@@ -125,9 +127,9 @@ public class InputConvertActivity extends FragmentActivity{
 				
 				//toggleFunction(attributes, R.drawable.e1, R.drawable.e2);				
 			}
-		});*/
+		});
 		
-		attributes.setOnTouchListener(new OnTouchListener() {
+		/*attributes.setOnTouchListener(new OnTouchListener() {
 			@Override
 			public boolean onTouch(View v, MotionEvent event) {
 				mAttributeFragment = new AttributeFragment();
@@ -139,7 +141,7 @@ public class InputConvertActivity extends FragmentActivity{
 					return true;
 				}
 				
-		});
+		});*/
 		
 		//"(square)" button onClickListener
 		effects.setOnClickListener(new OnClickListener(){
@@ -147,8 +149,9 @@ public class InputConvertActivity extends FragmentActivity{
 			public void onClick(View v){
 				
 				mEffectsFragment = new EffectsFragment();
-				
+					
 				fragmentRegister(mEffectsFragment);
+				
 				//toggleFunction(effects, clicked, R.drawable.e1, R.drawable.e2);
 				
 			}
@@ -175,9 +178,11 @@ public class InputConvertActivity extends FragmentActivity{
 					if(keyCode == KeyEvent.KEYCODE_ENTER){
 						PreviewDrawer(editText.getText().toString());
 						
+						//Hide keyboard
 						InputMethodManager imm = (InputMethodManager)getSystemService(
 							      Context.INPUT_METHOD_SERVICE);
 							imm.hideSoftInputFromWindow(editText.getWindowToken(), 0);
+							//
 						
 						Intent startParseIntent = new Intent (InputConvertActivity.this, ParseInputActivity.class);
 						startActivityForResult(startParseIntent, MESSAGE_PARSED);
@@ -198,30 +203,6 @@ public class InputConvertActivity extends FragmentActivity{
                 
         for(BluetoothDevice bt:pairedDevices)
         	visibleDevices.add(bt.getName() + "\n" + bt.getAddress());
-        
-        final DeviceSelectFragment myDialogFragment = new DeviceSelectFragment();
-        
-        // Create a BroadcastReceiver for ACTION_FOUND
-        mReceiver = new BroadcastReceiver() {
-            public void onReceive(Context context, Intent intent) {
-                String action = intent.getAction();
-                // When discovery finds a device
-                if (BluetoothDevice.ACTION_FOUND.equals(action)) {
-                    // Get the BluetoothDevice object from the Intent
-                    BluetoothDevice device = intent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE);
-                    // Add the name and address to an array adapter to show in a ListView
-                    visibleDevices.add(device.getName() + "\n" + device.getAddress());
-                    
-                   myDialogFragment.dismiss();
-                   myDialogFragment.show(getSupportFragmentManager(), "dialog");
-                }
-                
-            }
-        };
-        
-        // Register the BroadcastReceiver
-        IntentFilter filter = new IntentFilter(BluetoothDevice.ACTION_FOUND);
-        registerReceiver(mReceiver, filter); // Don't forget to unregister during onDestroy
                 
         send.setOnClickListener(new OnClickListener() {
 			@Override
@@ -249,16 +230,14 @@ public class InputConvertActivity extends FragmentActivity{
 						msg_b += tail[2][bt] + " ";
 					check.setText("tail0 " + msg + "\n" + "tail1 " + msg_a + "\n" + "tail2 " + msg_b);
 
-					LEDisplay.startDiscovery();
-
-					myDialogFragment.show(getSupportFragmentManager(), "dialog");
+					startActivity(new Intent(InputConvertActivity.this, DeviceSelectActivity.class));
 				}
 								
 			}
 		});
 		////////////////////////////////
 	}
-	
+			
 	@Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data){
     	super.onActivityResult(requestCode, resultCode, data);
@@ -280,9 +259,9 @@ public class InputConvertActivity extends FragmentActivity{
 	@Override
 	public void onDestroy(){
 		super.onDestroy();
-		unregisterReceiver(mReceiver);
+		//unregisterReceiver(mReceiver);
 	}
-	
+			
 	public void DataConstructor(){
 		if(mEffectsFragment != null){
 			mData.setEffect(pos, mEffectsFragment.getEffect());

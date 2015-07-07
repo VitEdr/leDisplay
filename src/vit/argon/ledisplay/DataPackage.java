@@ -35,7 +35,7 @@ public class DataPackage {
 			msg_head[1][pos + 1] |= effect;//set new effect
 			msg_tail[1][pos + 1] |= effect;//set new effect
 		}
-		else if (effect > 5){
+		if (effect >= 5){
 			msg_head[1][pos + 1] |= effect + 1;//set new effect
 			msg_tail[1][pos + 1] |= effect + 1;//set new effect
 		}
@@ -51,8 +51,8 @@ public class DataPackage {
 	public void setSpeed(int pos, int speed){
 		msg_head[1][pos + 1] &= 0x0F;//reset speed
 		msg_tail[1][pos + 1] &= 0x0F;//reset speed
-		msg_head[1][pos + 1] |= (7 - speed)*16;//set speed
-		msg_tail[1][pos + 1] |= (7 - speed)*16;//set speed
+		msg_head[1][pos + 1] |= (8 - speed)*16;//set speed
+		msg_tail[1][pos + 1] |= (8 - speed)*16;//set speed
 		msg_head[1][msg_head[1].length-1] = controlSum(msg_head[1]);
 		msg_tail[1][msg_tail[1].length-1] = controlSum(msg_tail[1]);
 	}

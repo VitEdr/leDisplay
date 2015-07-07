@@ -63,6 +63,7 @@ public class EffectsFragment extends Fragment{
 			@Override
 			public void onValueChange(NumberPicker picker, int oldVal, int newVal) {
 				setBright(newVal);
+				brPicker.setValue(newVal);
 			}
 		});
 		
@@ -71,6 +72,7 @@ public class EffectsFragment extends Fragment{
 			@Override
 			public void onValueChange(NumberPicker picker, int oldVal, int newVal) {
 				setSpeed(newVal);
+				spPicker.setValue(newVal);
 			}
 		});
 		

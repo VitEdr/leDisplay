@@ -5,6 +5,7 @@
     <string name="Italic">I</string>
     <string name="Bright">Яркость</string>
     <string name="Speed">Скорость</string>
+    <string name="Choose">Choose device</string>
     
     <string-array name="effectslist">
 	    <item>Налево</item>

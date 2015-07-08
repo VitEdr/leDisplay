@@ -22,9 +22,18 @@ public class AttributeFragment extends Fragment{
 	public Typeface font;
 	
 	private int txtSize;
+	private int txtFont;
+	private String TEXT_SIZE_KEY = "textsize";
+	private String TEXT_FONT_KEY = "textfont";
 	
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState){
+		
+		if(savedInstanceState != null){
+			txtSize = savedInstanceState.getInt(TEXT_SIZE_KEY);
+			txtFont = savedInstanceState.getInt(TEXT_FONT_KEY);
+		}
+		
 		return inflater.inflate(R.layout.attribute_menu, container, false);
 	}
 	
@@ -33,11 +42,16 @@ public class AttributeFragment extends Fragment{
 		super.onActivityCreated(savedInstanceState);
 		
 		textFont = (Spinner) getActivity().findViewById(R.id.spinner1);
+		if(txtFont != 0)
+			textFont.setSelection(txtFont);
 		
 		textSize = (NumberPicker) getActivity().findViewById(R.id.numberPicker1);
 		textSize.setMaxValue(16);
 		textSize.setMinValue(8);
-		textSize.setValue(12);
+		if(txtSize != 0)
+			textSize.setValue(txtSize);
+		else
+			textSize.setValue(12);
 		//String array [] = {"8","12","16"};  
 		//textSize.setDisplayedValues(array);
 		
@@ -76,6 +90,13 @@ public class AttributeFragment extends Fragment{
 				//TODO - setup font change on textview click
 			}
 		});
+	}
+	
+	@Override
+	public void onSaveInstanceState(Bundle savedInstanceState){
+		super.onSaveInstanceState(savedInstanceState);
+		savedInstanceState.putInt(TEXT_SIZE_KEY, getTextSize());
+		savedInstanceState.putInt(TEXT_FONT_KEY, textFont.getSelectedItemPosition());
 	}
 	
 	public void setFont(Typeface newfont){

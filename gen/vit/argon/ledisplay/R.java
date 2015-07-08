@@ -34,9 +34,9 @@ public final class R {
         public static final int log=0x7f02000d;
         public static final int o1=0x7f02000e;
         public static final int o2=0x7f02000f;
-        public static final int p1=0x7f020010;
-        public static final int p2=0x7f020011;
-        public static final int p_buttonstate=0x7f020012;
+        public static final int o_buttonstate=0x7f020010;
+        public static final int p1=0x7f020011;
+        public static final int p2=0x7f020012;
         public static final int s1=0x7f020013;
         public static final int s2=0x7f020014;
         public static final int s_buttonstate=0x7f020015;

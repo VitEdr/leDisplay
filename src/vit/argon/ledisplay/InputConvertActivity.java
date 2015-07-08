@@ -71,6 +71,9 @@ public class InputConvertActivity extends Activity{
 	private int pos;//led display number 1-8 
 	private static final int MESSAGE_PARSED = 0;
 	public int BODY_LENGTH;
+	private boolean touch_a = false;//for attributes
+	private boolean touch_e = false;//for effects
+	private boolean touch_t = false;//for template
 	//BLUETOOTH vars and consts
 	private static final int REQUEST_ENABLE_BT = 1;
 	private static BluetoothAdapter LEDisplay = null;
@@ -84,7 +87,10 @@ public class InputConvertActivity extends Activity{
 	protected void onCreate(Bundle savedInstanceState){
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.main);
-		
+		//Create fragments' instances
+		mAttributeFragment = new AttributeFragment();
+		mEffectsFragment = new EffectsFragment();
+		mTemplateFragment = new TemplateFragment();
 		mData = new DataPackage();
 		pos = 3;
 		//UI elements initialization
@@ -108,10 +114,14 @@ public class InputConvertActivity extends Activity{
 		txtediter.setOnClickListener(new OnClickListener(){
 			@Override
 			public void onClick(View v){
-				if(editText.getVisibility() == View.INVISIBLE)
+				if(editText.getVisibility() == View.INVISIBLE){
+					txtediter.setImageResource(R.drawable.t2);
 					editText.setVisibility(View.VISIBLE);
-				else
+					}
+				else{
+					txtediter.setImageResource(R.drawable.t1);
 					editText.setVisibility(View.INVISIBLE);
+				}
 			}
 		});
 		//"Aa" button onClickListener
@@ -119,41 +129,29 @@ public class InputConvertActivity extends Activity{
 			 
 			@Override
 			public void onClick(View v){
-				
-				mAttributeFragment = new AttributeFragment();
-				
-				//font = mAttributeFragment.getFont();
-				fragmentRegister(mAttributeFragment);
-				
-				//toggleFunction(attributes, R.drawable.e1, R.drawable.e2);				
+				if(fragMan.findFragmentById(R.id.framelayout1) != null){
+					if (fragMan.findFragmentById(R.id.framelayout1) == mEffectsFragment)
+						touch_e = fragmentRegister(mEffectsFragment, touch_e, effects, R.drawable.e1, R.drawable.e2);
+					if (fragMan.findFragmentById(R.id.framelayout1) == mTemplateFragment)
+						touch_t = fragmentRegister(mTemplateFragment, touch_t, template, R.drawable.s1, R.drawable.s2);
+				}							
+				touch_a = fragmentRegister(mAttributeFragment, touch_a, attributes, R.drawable.a1, R.drawable.a2);
+								
 			}
 		});
-		
-		/*attributes.setOnTouchListener(new OnTouchListener() {
-			@Override
-			public boolean onTouch(View v, MotionEvent event) {
-				mAttributeFragment = new AttributeFragment();
 				
-				fragmentRegister(mAttributeFragment);
-				
-					attributes.setPressed(true);
-				
-					return true;
-				}
-				
-		});*/
-		
 		//"(square)" button onClickListener
 		effects.setOnClickListener(new OnClickListener(){
 			@Override
 			public void onClick(View v){
-				
-				mEffectsFragment = new EffectsFragment();
-					
-				fragmentRegister(mEffectsFragment);
-				
-				//toggleFunction(effects, clicked, R.drawable.e1, R.drawable.e2);
-				
+				if(fragMan.findFragmentById(R.id.framelayout1) != null){
+					if (fragMan.findFragmentById(R.id.framelayout1) == mAttributeFragment)
+						touch_a = fragmentRegister(mAttributeFragment, touch_a, attributes, R.drawable.a1, R.drawable.a2);
+					if (fragMan.findFragmentById(R.id.framelayout1) == mTemplateFragment)
+						touch_t = fragmentRegister(mTemplateFragment, touch_t, template, R.drawable.s1, R.drawable.s2);
+				}	
+				touch_e = fragmentRegister(mEffectsFragment, touch_e, effects, R.drawable.e1, R.drawable.e2);
+												
 			}
 		});
 		
@@ -161,8 +159,13 @@ public class InputConvertActivity extends Activity{
 		template.setOnClickListener(new OnClickListener(){
 			@Override
 			public void onClick(View v){
-				mTemplateFragment = new TemplateFragment();
-				fragmentRegister(mTemplateFragment);
+				if(fragMan.findFragmentById(R.id.framelayout1) != null){
+					if (fragMan.findFragmentById(R.id.framelayout1) == mAttributeFragment)
+						touch_a = fragmentRegister(mAttributeFragment, touch_a, attributes, R.drawable.a1, R.drawable.a2);
+					if (fragMan.findFragmentById(R.id.framelayout1) == mEffectsFragment)
+						touch_e = fragmentRegister(mEffectsFragment, touch_e, effects, R.drawable.e1, R.drawable.e2);
+				}
+				touch_t = fragmentRegister(mTemplateFragment, touch_t, template, R.drawable.s1, R.drawable.s2);
 				
 			}
 		});
@@ -235,7 +238,7 @@ public class InputConvertActivity extends Activity{
 								
 			}
 		});
-		////////////////////////////////
+		///////////////////////////////*/
 	}
 			
 	@Override
@@ -272,27 +275,25 @@ public class InputConvertActivity extends Activity{
 		//mData.setFontSize(mAttributeFragment.getTextSize());
 		//mData.setBody(parsed_msg, BODY_LENGTH);
 	}
-	//DOESN'T WORK!!!		
-	public void toggleFunction(ImageView imageView, boolean clicked, int image_1, int image_2){
 		
-		if (imageView.getId() == image_1){
-            imageView.setImageResource(image_2);
-            clicked = true;
-		}            
-		else {
-            imageView.setImageResource(image_1);
-            clicked = false;
+	public boolean fragmentRegister(Fragment fragment, boolean touch, ImageView imageView, int id1, int id2){
+		if(!touch){
+			FragmentTransaction ft = fragMan.beginTransaction();
+			ft.replace(R.id.framelayout1, fragment);
+			ft.commit();
+			imageView.setImageResource(id2);
+			touch = true;
 		}
-	}
-	
-	public void fragmentRegister(Fragment fragment){
-		FragmentTransaction fragTrans = fragMan.beginTransaction();
-		fragTrans.replace(R.id.framelayout1, fragment);
-		fragMan.popBackStack();
-		fragTrans.addToBackStack(null);
-		fragTrans.commit();
+		else{
+			FragmentTransaction ft = fragMan.beginTransaction();
+			ft.remove(fragment);
+			ft.commit();
+			imageView.setImageResource(id1);
+			touch = false;
+		}
 		
 		getFragmentManager().executePendingTransactions();
+		return touch;
 	}
 	
 	public void PreviewDrawer(String text){

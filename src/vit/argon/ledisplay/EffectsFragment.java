@@ -24,28 +24,53 @@ public class EffectsFragment extends Fragment{
 	private int brightness;
 	private int speedness;
 	private int effect;
-		
+	
+	//save variables
+	private String EFFECT_KEY = "effect";
+	private String BRIGHT_KEY = "bright";
+	private String SPEED_KEY = "speed";
+	
+	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
             Bundle savedInstanceState) {
+		//Restore saved parameters
+		if(savedInstanceState != null){
+			effect = savedInstanceState.getInt(EFFECT_KEY);
+			brightness = savedInstanceState.getInt(BRIGHT_KEY);
+			speedness = savedInstanceState.getInt(SPEED_KEY);
+		}
         return inflater.inflate(R.layout.effects_menu, container, false);
 	}
-	
+	@Override
 	public void onActivityCreated(Bundle savedInstanceState){
 		super.onActivityCreated(savedInstanceState);
 		
 		effects = (Spinner) getActivity().findViewById(R.id.spinner2);
-		
+		if(effect != 0)
+			effects.setSelection(effect);
+		//Init pickers
 		bright = (TextView) getActivity().findViewById(R.id.textView7);
 		speed = (TextView) getActivity().findViewById(R.id.textView8);
-		
+		//Setup br picker
 		brPicker = (NumberPicker) getActivity().findViewById(R.id.numberPicker2);
-		spPicker = (NumberPicker) getActivity().findViewById(R.id.numberPicker3);
 		brPicker.setMaxValue(5);
 		brPicker.setMinValue(1);
-		setBright(1);
+		if(brightness != 0){
+			brPicker.setValue(brightness);
+			setBright(brightness);
+			}
+		else
+			setBright(1);
+		//Setup sp picker
+		spPicker = (NumberPicker) getActivity().findViewById(R.id.numberPicker3);
 		spPicker.setMaxValue(7);
 		spPicker.setMinValue(1);
-		setSpeed(1);
+		if(speedness != 0){
+			spPicker.setValue(speedness);
+			setSpeed(speedness);
+			}
+		else
+			setSpeed(1);
 		
 		effects.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
 			public void onItemSelected(AdapterView<?> parent, View view, 
@@ -76,6 +101,14 @@ public class EffectsFragment extends Fragment{
 			}
 		});
 		
+	}
+	
+	@Override
+	public void onSaveInstanceState(Bundle savedInstanceState){
+		super.onSaveInstanceState(savedInstanceState);
+		savedInstanceState.putInt(EFFECT_KEY, getEffect());
+		savedInstanceState.putInt(BRIGHT_KEY, getBright());
+		savedInstanceState.putInt(SPEED_KEY, getSpeed());		
 	}
 	
 	public void setSpeed(int speed){
